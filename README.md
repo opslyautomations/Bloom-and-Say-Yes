@@ -61,6 +61,22 @@ the page's `#plan` form or to `/contact`, so it works without JavaScript. Once J
 To add a trigger: `<PlanLink source="where-it-is" className="btn">Begin planning</PlanLink>`
 (`service="choose"` forces Step 1, `service="engagement"` forces that form).
 
+## Instagram feed (@bloom.and.sayyes)
+
+The "Follow along" section (homepage + gallery) shows the latest 8 posts, fetched on the
+server and refreshed hourly. That means real HTML, no third-party script, and no layout shift.
+Connect **one** source in Vercel → Settings → Environment Variables, then redeploy:
+
+1. **`INSTAGRAM_FEED_URL`** (recommended): sign up at a feed service such as Behold.so, connect
+   the Instagram account, create a feed, and paste its JSON feed URL. The service renews
+   Instagram's access tokens automatically.
+2. **`INSTAGRAM_ACCESS_TOKEN`**: the Instagram API with Instagram Login. This needs a
+   Business/Creator account and a Meta developer app, and long-lived tokens expire every
+   60 days, so they must be refreshed.
+
+With neither set, or if Instagram is unreachable, the section shows the site's own portfolio
+photos linking to the profile. The page never breaks. Code: `lib/instagram.ts`, `components/InstagramFeed.tsx`.
+
 ## Design system: "The Unfolding"
 
 - **Arch** (`components/Arch.tsx`): images in a ceremony-arch mask that opens from a slit on scroll.

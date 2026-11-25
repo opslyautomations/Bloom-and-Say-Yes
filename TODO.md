@@ -22,7 +22,9 @@ the surrounding copy still reads cleanly. Regenerate the full list any time with
 5. **LeadConnector chat widget ID** → `NEXT_PUBLIC_LC_CHAT_WIDGET_ID`.
 6. **Privacy & Terms copy** — paste the existing legal text into `app/privacy/page.tsx`
    and `app/terms/page.tsx` (both are `noindex` until then).
-7. **Location guide list** — `content/locations.ts`. Confirm Scarlett actually works all
+7. **Connect the Instagram feed**: set `INSTAGRAM_FEED_URL` (e.g. Behold.so) in Vercel so the
+   "Follow along" section shows live posts. See README → Instagram feed.
+8. **Location guide list** — `content/locations.ts`. Confirm Scarlett actually works all
    six (Windward Coast, Kahala, Waikiki, Ko Olina, botanical gardens, east-shore sunrise).
    Remove any she doesn't. Add photo locations where known.
 

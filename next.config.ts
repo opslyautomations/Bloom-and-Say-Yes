@@ -7,6 +7,13 @@ const nextConfig: NextConfig = {
     // Fewer srcset candidates = much smaller HTML (each image listed ~7 widths, not 16)
     deviceSizes: [640, 828, 1200, 1920],
     imageSizes: [128, 256, 384],
+    // Instagram feed images (see lib/instagram.ts)
+    remotePatterns: [
+      { protocol: "https", hostname: "**.cdninstagram.com" },
+      { protocol: "https", hostname: "**.fbcdn.net" },
+      { protocol: "https", hostname: "behold.pictures" },
+      { protocol: "https", hostname: "**.behold.pictures" },
+    ],
     minimumCacheTTL: 60 * 60 * 24 * 30,
   },
   async redirects() {

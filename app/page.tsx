@@ -18,6 +18,7 @@ import { PlanningFromAfar } from "@/components/PlanningFromAfar";
 import { Steps } from "@/components/Steps";
 import Testimonials from "@/components/Testimonials";
 import { PlanLink } from "@/components/plan/PlanLink";
+import { InstagramFeed } from "@/components/InstagramFeed";
 
 export const metadata = pageMeta({
   title: "Oahu Proposal Planner & Floral Design | Bloom & Say Yes",
@@ -196,8 +197,15 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Planning from afar */}
+        {/* Instagram */}
         <PetalDivider from="blush" to="linen" />
+        <section className="relative z-[12] bg-linen pt-20 sm:pt-28" aria-label="Instagram">
+          <div className="wrap wrap-vine">
+            <InstagramFeed />
+          </div>
+        </section>
+
+        {/* Planning from afar */}
         <section className="bg-linen py-20 sm:py-28" aria-label="Planning from afar">
           <div className="wrap wrap-vine">
             <PlanningFromAfar />

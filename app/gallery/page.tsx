@@ -5,6 +5,7 @@ import { FinalCta } from "@/components/FinalCta";
 import { GalleryGrid } from "@/components/GalleryGrid";
 import { JsonLd } from "@/components/JsonLd";
 import { PageIntro } from "@/components/PageIntro";
+import { InstagramFeed } from "@/components/InstagramFeed";
 
 export const metadata = pageMeta({
   title: "Proposal & Floral Gallery, Oahu | Bloom & Say Yes",
@@ -27,6 +28,9 @@ export default function GalleryPage() {
       <section className="bg-linen pb-24" aria-label="Photo gallery">
         <div className="wrap">
           <GalleryGrid items={photos} />
+          <div className="mt-24 border-t border-stone pt-16">
+            <InstagramFeed />
+          </div>
         </div>
       </section>
       <FinalCta from="linen" />
