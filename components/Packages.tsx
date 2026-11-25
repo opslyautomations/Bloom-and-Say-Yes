@@ -20,7 +20,7 @@ export function Packages({ service }: { service: Service }) {
             <ul className="mt-6 space-y-2 text-left text-[0.98rem]">
               {p.includes.map((x) => <li key={x} className="flex gap-3"><span className="text-rose" aria-hidden="true">✿</span>{x}</li>)}
             </ul>
-            <PlanLink service={service.slug} source="packages" href="#plan" className="btn mt-8 self-center">Begin planning</PlanLink>
+            <PlanLink service={service.slug} source="packages" href="#plan" className="btn mt-8 self-center">Request {p.name}</PlanLink>
           </li>
         ))}
       </ul>

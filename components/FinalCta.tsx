@@ -26,8 +26,8 @@ function Bloom() {
  * On the homepage it is Chapter VIII and the vine blooms here.
  */
 export function FinalCta({
-  from = "linen", chapter = false, href, service = "auto",
-}: { from?: Bg; chapter?: boolean; href?: string; service?: PlanService | "auto" | "choose" }) {
+  from = "linen", chapter = false, href, service = "auto", label = "Begin planning",
+}: { from?: Bg; chapter?: boolean; href?: string; service?: PlanService | "auto" | "choose"; label?: string }) {
   return (
     <>
       <PetalDivider from={from} to="ink" variant="b" />
@@ -46,7 +46,7 @@ export function FinalCta({
             <div className="relative mx-auto mt-14 grid h-[340px] place-items-center">
               <Bloom />
               <PlanLink service={service} source="final_cta" href={href} className="btn relative z-10 !min-h-[60px] !px-9">
-                Begin planning <span className="arrow" aria-hidden="true">→</span>
+                {label} <span className="arrow" aria-hidden="true">→</span>
               </PlanLink>
             </div>
             <p className="mt-4 text-[0.98rem] text-blush">

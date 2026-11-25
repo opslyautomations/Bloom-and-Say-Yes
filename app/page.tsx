@@ -141,7 +141,7 @@ export default function Home() {
                       <li key={b} className="flex gap-3"><span className="text-rose" aria-hidden="true">✿</span>{b}</li>
                     ))}
                   </ul>
-                  <Link href={s.path} className="link-quiet mt-5" aria-label={`Explore ${s.name}`}>Explore <span className="arrow" aria-hidden="true">→</span></Link>
+                  <Link href={s.path} className="link-quiet mt-5">Explore {s.navLabel.toLowerCase()} <span className="arrow" aria-hidden="true">→</span></Link>
                 </li>
               ))}
             </ul>

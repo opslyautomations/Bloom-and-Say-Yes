@@ -3,18 +3,18 @@ import { LeafSprig } from "./Icons";
 /** Deterministic, slightly irregular sine so the stroke feels hand-drawn. */
 function vinePath() {
   const pts: [number, number][] = [];
-  const N = 160;
+  const N = 90;
   for (let i = 0; i <= N; i++) {
     const y = (i / N) * 1000;
-    const wobble = Math.sin(i * 1.15) * 5.5 + Math.sin(i * 0.37 + 1) * 2.5;
+    const wobble = Math.sin(i * 2.04) * 5.5 + Math.sin(i * 0.66 + 1) * 2.5;
     pts.push([16 + wobble, y]);
   }
-  let d = `M${pts[0][0].toFixed(2)} 0`;
+  let d = `M${pts[0][0].toFixed(1)} 0`;
   for (let i = 1; i < pts.length; i++) {
     const [x0, y0] = pts[i - 1];
     const [x1, y1] = pts[i];
     const my = (y0 + y1) / 2;
-    d += ` C${x0.toFixed(2)} ${my.toFixed(2)} ${x1.toFixed(2)} ${my.toFixed(2)} ${x1.toFixed(2)} ${y1.toFixed(2)}`;
+    d += ` C${x0.toFixed(1)} ${my.toFixed(1)} ${x1.toFixed(1)} ${my.toFixed(1)} ${x1.toFixed(1)} ${y1.toFixed(1)}`;
   }
   return d;
 }

@@ -16,6 +16,7 @@ export default function StickyCta() {
   const onService = SERVICE_PATHS.includes(pathname);
   const hidden = pathname === "/contact";
   const href = onService ? "#plan" : "/contact";
+  const label = !onService ? "Begin planning" : pathname === "/engagement" ? "Plan your proposal" : pathname === "/gender-reveals" ? "Plan your reveal" : "Plan your elopement";
 
   useEffect(() => {
     setShow(false);
@@ -67,7 +68,7 @@ export default function StickyCta() {
         style={{ minHeight: 56 }}
         tabIndex={show ? 0 : -1}
       >
-        Begin planning <span className="arrow" aria-hidden="true">→</span>
+        {label} <span className="arrow" aria-hidden="true">→</span>
       </a>
     </div>
   );

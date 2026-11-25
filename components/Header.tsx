@@ -11,8 +11,8 @@ export function Header() {
   return (
     <header className="sticky top-0 z-40 border-b border-stone/70 bg-linen/92 backdrop-blur-md supports-[backdrop-filter]:bg-linen/80">
       <div className="wrap flex h-[76px] items-center justify-between gap-4">
-        <Link href="/" className="flex shrink-0 items-center" aria-label={`${site.name} — home`}>
-          <Image src={images.logo.src} alt="" width={images.logo.width} height={images.logo.height} className="h-[54px] w-auto" priority sizes="82px" />
+        <Link href="/" className="flex shrink-0 items-center">
+          <Image src={images.logo.src} alt={`${site.name} Hawaii — home`} width={images.logo.width} height={images.logo.height} className="h-[54px] w-auto" priority sizes="82px" />
         </Link>
 
         <nav aria-label="Main" className="hidden lg:block">
@@ -20,8 +20,9 @@ export function Header() {
         </nav>
 
         <div className="flex items-center gap-1 sm:gap-2">
-          <a href={site.phone.href} className="grid h-11 w-11 place-items-center rounded-full text-ink transition-colors hover:bg-blush hover:text-mauve" aria-label={`Call or text ${site.phone.display}`}>
+          <a href={site.phone.href} className="grid h-11 w-11 place-items-center rounded-full text-ink transition-colors hover:bg-blush hover:text-mauve">
             <PhoneIcon />
+            <span className="sr-only">Call or text {site.phone.display}</span>
           </a>
           <PlanLink source="header" className="btn btn-sm hidden sm:inline-flex">Begin planning</PlanLink>
 

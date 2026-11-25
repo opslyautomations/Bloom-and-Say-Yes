@@ -46,6 +46,8 @@ export function ServicePage({ service: s, extras = [], locationSlugs, reviewCoun
   const strip = tagged.slice(0, 5);
   const reviewList = reviewsFor(s.reviewTags, s.preferredReviews, reviewCount);
   const [before, after] = emphasis ? s.h1.split(emphasis) : [s.h1, ""];
+  // Distinct anchor text for #plan links (header "Begin planning" goes to /contact)
+  const planLabel = `Plan your ${s.slug === "engagement" ? "proposal" : s.slug === "gender-reveals" ? "reveal" : "elopement"}`;
 
   return (
     <>
@@ -58,7 +60,7 @@ export function ServicePage({ service: s, extras = [], locationSlugs, reviewCoun
         title={emphasis ? <>{before}<em>{emphasis}</em>{after}</> : s.h1}
         answer={s.answer}
         image={images[s.image]}
-        primary={{ href: "#plan", label: "Begin planning", plan: s.slug }}
+        primary={{ href: "#plan", label: planLabel, plan: s.slug }}
         secondary={{ href: "#work", label: "See the work" }}
       >
         <ul className="mt-10 flex flex-wrap gap-x-6 gap-y-2 text-[0.78rem] font-semibold uppercase tracking-[0.14em] text-dusk-text">
@@ -212,7 +214,7 @@ export function ServicePage({ service: s, extras = [], locationSlugs, reviewCoun
         heading={`Plan your ${s.slug === "engagement" ? "proposal" : s.slug === "gender-reveals" ? "reveal" : "elopement"}`}
       />
 
-      <FinalCta from="cream" href="#plan" service={s.slug} />
+      <FinalCta from="cream" href="#plan" service={s.slug} label={planLabel} />
     </>
   );
 }
