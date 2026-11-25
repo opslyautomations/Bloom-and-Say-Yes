@@ -1,17 +1,16 @@
 import { site } from "@/content/site";
-import { Rich } from "@/lib/confirm";
 import InquiryForm from "./InquiryForm";
 
 type Props = {
-  formId: string | null;
+  formId: string;
   formTitle: string;
+  formHeight?: number;
   heading?: string;
   eyebrow?: string;
-  missingNote?: string;
 };
 
 /** The booking block (#plan): friendly intro, visible phone/email fallback, then the embed. */
-export function InquirySection({ formId, formTitle, heading = "Share your vision", eyebrow = "Begin planning", missingNote }: Props) {
+export function InquirySection({ formId, formTitle, formHeight, heading = "Share your vision", eyebrow = "Begin planning" }: Props) {
   return (
     <section id="plan" aria-labelledby="plan-heading" className="scroll-mt-24 bg-cream py-20 sm:py-28">
       <div className="wrap grid gap-12 lg:grid-cols-12">
@@ -27,27 +26,9 @@ export function InquirySection({ formId, formTitle, heading = "Share your vision
               <a className="link break-all" href={`mailto:${site.email}`}>{site.email}</a>.
             </p>
           </div>
-          {!formId && missingNote ? <p className="mt-4"><Rich text={missingNote} /></p> : null}
         </div>
         <div className="lg:col-span-8">
-          {formId ? (
-            <InquiryForm formId={formId} title={formTitle} />
-          ) : (
-            // No form ID yet: no stand-in form — just the direct ways to reach Scarlett.
-            <div className="grid min-h-[320px] place-items-center rounded-[14px] border border-stone bg-white p-8 text-center">
-              <div>
-                <p className="font-display text-[1.8rem] leading-tight">Let&apos;s plan it together</p>
-                <p className="mx-auto mt-3 max-w-md">
-                  Call or text <a className="link" href={site.phone.href}>{site.phone.display}</a>, or email{" "}
-                  <a className="link break-all" href={`mailto:${site.email}`}>{site.email}</a> with your date and vision.
-                </p>
-                <div className="mt-6 flex flex-wrap justify-center gap-3">
-                  <a href={site.phone.sms} className="btn">Text Scarlett</a>
-                  <a href={`mailto:${site.email}`} className="btn btn-ghost">Email</a>
-                </div>
-              </div>
-            </div>
-          )}
+          <InquiryForm formId={formId} title={formTitle} height={formHeight} />
         </div>
       </div>
     </section>

@@ -4,6 +4,8 @@ import { useEffect, useLayoutEffect, useRef, useState, type MutableRefObject, ty
 import type { PlanOption, PlanService } from "@/lib/plan";
 import InquiryForm from "../InquiryForm";
 
+const FORM_ORIGIN = "https://api.opslyautomations.com";
+
 type Props = {
   open: boolean;
   service: PlanService | null;
@@ -62,6 +64,30 @@ export default function PlanModal({
   const prev = useRef<{ step: 1 | 2; service: PlanService | null }>({ step, service });
   const openProp = useRef(open);
   openProp.current = open;
+  const body = useRef<HTMLDivElement>(null);
+  const [scrolled, setScrolled] = useState(false);
+  const [formFailed, setFormFailed] = useState(false);
+
+  // New step / service: reset the failure flag and start at the top of the body
+  useEffect(() => {
+    setFormFailed(false);
+    body.current?.scrollTo({ top: 0 });
+    setScrolled(false);
+  }, [step, service]);
+
+  // After a successful submit, scroll the panel back up so the thank-you message is visible
+  useEffect(() => {
+    if (!open) return;
+    const onMessage = (e: MessageEvent) => {
+      if (e.origin !== FORM_ORIGIN) return;
+      const raw = typeof e.data === "string" ? e.data : JSON.stringify(e.data ?? "");
+      if (/submit|submitted|form-submit|formSubmit/i.test(raw)) {
+        body.current?.scrollTo({ top: 0, behavior: reduced() ? "auto" : "smooth" });
+      }
+    };
+    window.addEventListener("message", onMessage);
+    return () => window.removeEventListener("message", onMessage);
+  }, [open]);
 
   const focusTitle = () => title.current?.focus({ preventScroll: true });
 
@@ -119,15 +145,22 @@ export default function PlanModal({
   };
 
   // Swipe down to close (bottom sheet)
-  const drag = useRef<{ y: number; dy: number; id: number } | null>(null);
+  // Capture only once the finger actually moves, and never from a button,
+  // so taps on "All services" / Close still register as clicks.
+  const drag = useRef<{ y: number; dy: number; id: number; captured: boolean } | null>(null);
   const onDown = (e: RPointerEvent) => {
     if (window.innerWidth >= 640) return;
-    drag.current = { y: e.clientY, dy: 0, id: e.pointerId };
-    (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
+    if ((e.target as Element).closest("button, a")) return;
+    drag.current = { y: e.clientY, dy: 0, id: e.pointerId, captured: false };
   };
   const onMove = (e: RPointerEvent) => {
     if (!drag.current || !panel.current) return;
     drag.current.dy = Math.max(0, e.clientY - drag.current.y);
+    if (!drag.current.captured) {
+      if (drag.current.dy < 6) return;
+      drag.current.captured = true;
+      (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
+    }
     panel.current.style.transition = "none";
     panel.current.style.transform = `translateY(${drag.current.dy}px)`;
   };
@@ -141,6 +174,20 @@ export default function PlanModal({
   };
 
   const opt = (s: PlanService | null) => options.find((o) => o.slug === s) ?? null;
+
+  /** Shown only if a form fails to load (8s timeout, iframe error, or host unreachable). */
+  const fallbackCard = (
+    <div className="rounded-[8px] border border-stone bg-white p-6 text-center" role="status">
+      <p className="font-display text-[1.35rem]">Let&apos;s plan it together</p>
+      <p className="mt-2 text-[0.95rem]">
+        The form didn&apos;t load, but Scarlett is easy to reach. Call or text{" "}
+        <a className="link whitespace-nowrap" href={phone.href}>{phone.display}</a>, or email{" "}
+        <span className="whitespace-nowrap max-[399px]:mt-1 max-[399px]:block">
+          <a className="link" href={`mailto:${email}`}>{email}</a>
+        </span>
+      </p>
+    </div>
+  );
 
   const talk = (
     <p className="mt-6 text-center text-[0.92rem] text-dusk-text">
@@ -178,22 +225,20 @@ export default function PlanModal({
         <div className="mt-6">
           {ghost ? (
             <div className="shimmer h-[520px] rounded" aria-hidden="true" />
-          ) : o?.formId ? (
-            <InquiryForm key={o.formId} formId={o.formId} title={o.formTitle} skeleton height={760} />
-          ) : (
-            <div className="rounded-[8px] border border-stone bg-white p-6 text-center">
-              <p className="font-display text-[1.35rem]">Let&apos;s plan it together</p>
-              <p className="mt-2 text-[0.95rem]">
-                Call or text <a className="link" href={phone.href}>{phone.display}</a>, or email{" "}
-                <a className="link break-all" href={`mailto:${email}`}>{email}</a>, and Scarlett will take it from there.
-              </p>
-              {(process.env.NODE_ENV === "development" || process.env.NEXT_PUBLIC_SHOW_TODOS === "1") ? (
-                <p className="mt-3"><span className="todo">CONFIRM: {o?.label} form ID in content/services.ts</span></p>
-              ) : null}
-            </div>
-          )}
+          ) : o ? (
+            <InquiryForm
+              key={o.formId}
+              formId={o.formId}
+              title={o.formTitle}
+              height={o.formHeight ?? 760}
+              skeleton
+              fallback={fallbackCard}
+              onStatus={(st) => setFormFailed(st === "failed")}
+            />
+          ) : null}
         </div>
-        {talk}
+        {/* One phone line only: the fallback card already carries it */}
+        {ghost || formFailed ? null : talk}
       </div>
     );
   };
@@ -216,7 +261,7 @@ export default function PlanModal({
       <div className="plan-frame" onClick={(e) => { if (e.target === e.currentTarget && step === 1) onRequestClose(); }}>
         <div ref={panel} className="plan-panel">
           {/* Header: drag handle (mobile), arch motif, title, close */}
-          <div className="plan-head" onPointerDown={onDown} onPointerMove={onMove} onPointerUp={onUp} onPointerCancel={onUp}>
+          <div className="plan-head" data-scrolled={scrolled ? "" : undefined} onPointerDown={onDown} onPointerMove={onMove} onPointerUp={onUp} onPointerCancel={onUp}>
             <span className="plan-handle" aria-hidden="true" />
             <span className="plan-arch" aria-hidden="true" />
             <button type="button" className="plan-close" onClick={onRequestClose} aria-label="Close">
@@ -233,6 +278,14 @@ export default function PlanModal({
             </h2>
           </div>
 
+          <div
+            ref={body}
+            className="plan-body"
+            onScroll={(e) => {
+              const y = (e.currentTarget as HTMLDivElement).scrollTop > 4;
+              if (y !== scrolled) setScrolled(y);
+            }}
+          >
           <div className="plan-steps">
             {leaving ? (
               <div className={`plan-step plan-leave-${leaving.dir}`} aria-hidden="true" inert>
@@ -242,6 +295,7 @@ export default function PlanModal({
             <div key={`${step}-${service ?? ""}`} className={`plan-step ${leaving ? `plan-enter-${leaving.dir}` : ""}`}>
               {phase !== "closed" || open ? renderStep(step, service) : null}
             </div>
+          </div>
           </div>
         </div>
       </div>

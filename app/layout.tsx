@@ -61,7 +61,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       </head>
       <body>
         <PlanProvider
-          options={services.map((s) => ({ slug: s.slug, label: s.plan.label, blurb: s.plan.blurb, icon: s.plan.icon, formId: s.formId, formTitle: s.formTitle }))}
+          options={services.map((s) => ({ slug: s.slug, label: s.plan.label, blurb: s.plan.blurb, icon: s.plan.icon, formId: s.formId, formTitle: s.formTitle, formHeight: s.formHeight }))}
           intro={site.formIntro}
           phone={{ display: site.phone.display, href: site.phone.href, sms: site.phone.sms }}
           email={site.email}

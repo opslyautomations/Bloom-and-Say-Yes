@@ -36,10 +36,11 @@ export type Service = {
   /**
    * LeadConnector form ID — the single source of truth for both the inline
    * form on the service page and the "Plan Your Perfect Day" popup.
-   * null = not supplied yet: a call/text/email panel is shown instead.
    */
-  formId: string | null;
+  formId: string;
   formTitle: string;
+  /** Reserved iframe height in px (prevents layout shift while it loads). */
+  formHeight?: number;
   /** Row shown in Step 1 ("Choose Your Service") of the popup. */
   plan: { label: string; blurb: string; icon: "heart" | "reveal" | "sparkle" };
   packages: Package[] | null;
@@ -147,9 +148,9 @@ export const services: Service[] = [
     galleryTags: ["reveal", "florals"],
     reviewTags: ["florals"],
     preferredReviews: ["taylor", "adrienne-wu", "patrick-ka"],
-    // {{CONFIRM: Gender Reveals LeadConnector form ID — paste it here (was given as PASTE_GENDER_REVEAL_FORM_ID_HERE)}}
-    formId: null,
+    formId: "50LHHPGjufTMFJHgi3cD",
     formTitle: "Gender reveal inquiry form",
+    formHeight: 1507,
     plan: { label: "Gender Reveals", blurb: "Celebrate your special surprise", icon: "reveal" },
     packages: null,
     packagesNote: "{{CONFIRM: gender reveal packages and starting prices}}",

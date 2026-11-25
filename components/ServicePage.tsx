@@ -208,8 +208,8 @@ export function ServicePage({ service: s, extras = [], locationSlugs, reviewCoun
       <InquirySection
         formId={s.formId}
         formTitle={s.formTitle}
+        formHeight={s.formHeight}
         heading={`Plan your ${s.slug === "engagement" ? "proposal" : s.slug === "gender-reveals" ? "reveal" : "elopement"}`}
-        missingNote={s.formId ? undefined : `{{CONFIRM: ${s.name} form ID in content/services.ts}}`}
       />
 
       <FinalCta from="cream" href="#plan" service={s.slug} />

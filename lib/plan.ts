@@ -32,6 +32,7 @@ export type PlanOption = {
   label: string;
   blurb: string;
   icon: "heart" | "reveal" | "sparkle";
-  formId: string | null;
+  formId: string;
   formTitle: string;
+  formHeight?: number;
 };

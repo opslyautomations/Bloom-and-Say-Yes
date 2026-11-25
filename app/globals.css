@@ -452,14 +452,15 @@ dialog.plan-dialog::backdrop { background: transparent; }
 @media (min-width: 640px) { .plan-frame { align-items: center; padding: 24px; } }
 
 .plan-panel {
-  position: relative; width: 100%; max-height: 92dvh; overflow-y: auto; overscroll-behavior: contain;
+  position: relative; width: 100%; display: flex; flex-direction: column;
+  max-height: 92vh; max-height: min(92vh, 92dvh); overflow: hidden;
   background: var(--color-cream); border-radius: 18px 18px 0 0;
   box-shadow: 0 30px 80px -30px rgb(74 52 56 / 0.55), 0 2px 10px rgb(74 52 56 / 0.08);
   opacity: 0; transform: translateY(16px) scale(0.98);
   transition: opacity 350ms ease-out, transform 350ms var(--ease-expo);
 }
 @media (min-width: 640px) {
-  .plan-panel { max-width: 560px; max-height: min(90dvh, 920px); border-radius: 8px; }
+  .plan-panel { max-width: 560px; border-radius: 8px; }
 }
 @media (max-width: 639px) {
   .plan-panel { opacity: 1; transform: translateY(100%); }
@@ -469,8 +470,17 @@ dialog.plan-dialog[data-state="open"] .plan-panel { opacity: 1; transform: none;
 dialog.plan-dialog[data-state="closing"] .plan-overlay { opacity: 0; transition-duration: 200ms; }
 dialog.plan-dialog[data-state="closing"] .plan-panel { transition-duration: 200ms; transition-timing-function: ease-in; }
 
-.plan-head { position: relative; padding: 2.25rem 1.25rem 1.5rem; touch-action: pan-x; overflow: hidden; }
+/* Header stays pinned; the body scrolls underneath it */
+.plan-head {
+  position: relative; flex: none; z-index: 3; padding: 2.25rem 1.25rem 1.5rem; touch-action: pan-x; overflow: hidden;
+  background: var(--color-cream); border-bottom: 1px solid transparent; transition: border-color .2s, padding .3s var(--ease-expo);
+}
 @media (min-width: 640px) { .plan-head { padding: 2.75rem 2rem 1.75rem; touch-action: auto; } }
+.plan-head[data-scrolled] { border-bottom-color: var(--color-stone); padding-top: 1.75rem; padding-bottom: 0.9rem; }
+.plan-head[data-scrolled] .eyebrow, .plan-head[data-scrolled] .plan-arch { opacity: 0; height: 0; margin: 0; overflow: hidden; }
+.plan-head[data-scrolled] #plan-title { font-size: 1.6rem; margin-top: 0; }
+.plan-head .eyebrow, .plan-head .plan-arch, .plan-head #plan-title { transition: opacity .2s, font-size .3s var(--ease-expo); }
+.plan-body { flex: 1 1 auto; min-height: 0; overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; }
 .plan-handle { position: absolute; top: 10px; left: 50%; width: 44px; height: 4px; margin-left: -22px; border-radius: 99px; background: var(--color-stone); }
 @media (min-width: 640px) { .plan-handle { display: none; } }
 .plan-arch {

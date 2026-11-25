@@ -11,13 +11,9 @@ the surrounding copy still reads cleanly. Regenerate the full list any time with
 1. **Alt text for all 13 photos** — `lib/images.ts`. Each photo has a `suggestedAlt`
    written from looking at it. Check each one, add the location if known, and copy it
    into `alt`. (Until then production uses the draft, never a placeholder.)
-2. **Gender Reveals form ID** — paste it into `content/services.ts` → gender-reveals `formId`
-   (it was supplied as the placeholder `PASTE_GENDER_REVEAL_FORM_ID_HERE`). Until then, both
-   the `/gender-reveals` page and the popup's "Gender Reveals" option show a call / text / email
-   panel. No stand-in form is used.
-3. **General contact form ID** — `content/services.ts` → `contactForm`. `/contact`'s inline form
+2. **General contact form ID** — `content/services.ts` → `contactForm`. `/contact`'s inline form
    uses the engagement form until then. (The popup on /contact opens at Step 1, so every service there uses its own form.)
-3b. **Chat bubble selector** — the popup hides the LeadConnector chat bubble with CSS
+3. **Chat bubble selector** — the popup hides the LeadConnector chat bubble with CSS
    (`app/globals.css`, "Hide the LeadConnector chat bubble"). Verify the selectors once the
    chat widget ID is live.
 4. **GA4 measurement ID** → set `NEXT_PUBLIC_GA_ID` in Vercel. Then verify the
@@ -99,12 +95,11 @@ the surrounding copy still reads cleanly. Regenerate the full list any time with
 - `content/locations.ts:211` — specific sunrise locations and any hike/access details
 - `content/locations.ts:221` — typical sunrise setup start time
 - `content/locations.ts:228` — confirm photo location before captioning
-- `content/services.ts:105` — package names, inclusions, and starting prices
-- `content/services.ts:150` — Gender Reveals LeadConnector form ID — paste it here (was given as PASTE_GENDER_REVEAL_FORM_ID_HERE)
-- `content/services.ts:155` — gender reveal packages and starting prices
-- `content/services.ts:192` — whether officiant booking is included
-- `content/services.ts:204` — elopement packages and starting prices
-- `content/services.ts:221` — general contact form ID — currently using the proposal form
+- `content/services.ts:106` — package names, inclusions, and starting prices
+- `content/services.ts:156` — gender reveal packages and starting prices
+- `content/services.ts:193` — whether officiant booking is included
+- `content/services.ts:205` — elopement packages and starting prices
+- `content/services.ts:222` — general contact form ID — currently using the proposal form
 - `content/site.ts:6` — note
 - `content/site.ts:30` — {{CONFIRM}}
 - `content/site.ts:32` — {{CONFIRM}}
